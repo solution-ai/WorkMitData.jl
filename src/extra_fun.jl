@@ -40,3 +40,29 @@ function dttodate!(df::DataFrame,cols)
         df[!,i]=dttodate.(df[!,i])
     end
 end
+
+"""
+intck(x,y) computes the difference between two date objects and return number of day. Any of x and y can be missing value.
+"""
+intck(x::Missing,y::Missing)=missing
+intck(x::Missing,y)=missing
+intck(x,y::Missing)=missing
+intck(x::Date,y::Date)=(x-y).value
+
+"""
+rescale(x,minx,maxx,minval,maxval) rescales x to run from minval and maxval, given x originaly runs from minx to maxx.
+"""
+function rescale(x,minx,maxx,minval,maxval)
+    -(-maxx*minval+minx*maxval)/(maxx-minx)+(-minval+maxval)*x/(maxx-minx)
+end
+rescale(x::Missing,minx,maxx,minval,maxval)=missing
+
+
+"""
+stdze(x) standardizes an array. It return missing for missing data points.
+"""
+function stdze(x)
+    meandata=mean(skipmissing(x))
+    vardata=var(skipmissing(x))
+    (x .- meandata)/sqrt(vardata)
+end
