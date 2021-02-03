@@ -42,6 +42,8 @@ function lag(x,k)
     res
 end
 
+lag(x)=lag(x,1)
+
 """
 lead(x,k) Creates a lead-k of the provided array x. The output will be an array the
 same size as x (the input array), and the its type will be Union{Missing, T} where T is the type of input.
@@ -56,6 +58,7 @@ function lead(x,k)
     end
     res
 end
+lead(x)=lead(x,1)
 
 """
 dttodate(x) converts SAS or STATA dates (which is the number of days after 01-01-1960) to a Julia Date object.
