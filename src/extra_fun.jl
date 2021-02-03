@@ -13,7 +13,8 @@ function rescale(x,minx,maxx,minval,maxval)
     -(-maxx*minval+minx*maxval)/(maxx-minx)+(-minval+maxval)*x/(maxx-minx)
 end
 rescale(x::Missing,minx,maxx,minval,maxval)=missing
-
+rescale(x::Vector,minx,maxx,minval,maxval)=rescale.(x,minx,maxx,minval,maxval)
+rescale(x,minx,maxx)=rescale(x,minx,maxx,0,1)
 
 """
 stdze(x) standardizes an array. It return missing for missing data points.
