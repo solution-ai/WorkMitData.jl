@@ -73,3 +73,121 @@ function dttodate!(df::DataFrame,cols)
     end
 end
 
+# modifying some Base functions to suit for working with data with missing values
+
+Base.maximum(x::AbstractArray{Missing,1})=missing
+function Base.maximum(x::AbstractArray{Union{T,Missing},1}) where {T <: Number}
+    res=typemin(T)
+    cnt_miss=0
+    for i in 1:length(x)
+        if !ismissing(x[i])
+            if x[i]>res
+                res=x[i]
+            end
+        else
+            cnt_miss+=1
+        end
+    end
+    if cnt_miss==length(x)
+        res=missing
+    end
+    res
+end
+
+Base.minimum(x::AbstractArray{Missing,1})=missing
+function Base.minimum(x::AbstractArray{Union{T,Missing},1}) where {T <: Number}
+    res=typemax(T)
+    cnt_miss=0
+    for i in 1:length(x)
+        if !ismissing(x[i])
+            if res<x[i]
+                res=x[i]
+            end
+        else
+            cnt_miss+=1
+        end
+    end
+    if cnt_miss==length(x)
+        res=missing
+    end
+    res
+end
+
+Base.sum(x::AbstractArray{Missing,1})=missing
+function Base.sum(x::AbstractArray{Union{T,Missing},1}) where {T <: Number}
+    res=zero(T)
+    cnt_miss=0
+    for i in 1:length(x)
+        if !ismissing(x[i])
+            res+=x[i]
+        end
+    else
+        cnt_miss+=1
+    end
+    if cnt_miss==length(x)
+        res=missing
+    end
+    res
+end
+
+Statistics.mean(x::AbstractArray{Missing,1})=missing
+function Statistics.mean(x::AbstractArray{Union{T,Missing},1}) where {T <: Number}
+    res=0.0
+    cnt_nonmiss=0
+    for i in 1:length(x)
+        if !ismissing(x[i])
+            res+=x[i]
+            cnt_nonmiss+=1
+        end
+    end
+    if cnt_nonmiss>0
+        res=res/cnt_nonmiss
+    else
+        res=missing
+    end
+    res
+end
+
+Statistics.var(x::AbstractArray{Missing,1},df=true)=missing
+function Statistics.var(x::AbstractArray{Union{T,Missing},1},df=true) where {T <: Number}
+    res=0.0
+    ss=0.0
+    sval=0.0
+    cnt_nonmiss=0
+    for i in 1:length(x)
+        if !ismissing(x[i])
+            sval+=x[i]
+            ss+=x[i] * x[i]
+            cnt_nonmiss+=1
+        end
+    end
+    if cnt_nonmiss>0
+        df ? cnt_nonmiss-=1 : nothing
+        res=ss/cnt_nonmiss - (sval/cnt_nonmiss)*(sval/cnt_nonmiss)
+    else
+        res=missing
+    end
+    res
+end
+Statistics.std(x::AbstractArray{Missing,1},df=true)=missing
+function Statistics.std(x::AbstractArray{Union{T,Missing},1},df=true) where {T <: Number}
+    sqrt(var(x,df))
+end
+
+
+function Statistics.median!(v::AbstractVector)
+    isempty(v) && throw(ArgumentError("median of an empty array is undefined, $(repr(v))"))
+    eltype(v)>:Missing && all(ismissing, v) && return missing
+    (eltype(v)<:AbstractFloat || eltype(v)>:AbstractFloat) && any(isnan, v) && return convert(eltype(v), NaN)
+    any(ismissing,v) ? v2=collect(skipmissing(v)) : v2=v
+    inds = axes(v2, 1)
+    n = length(inds)
+    mid = div(first(inds)+last(inds),2)
+    if isodd(n)
+        return middle(partialsort!(v2,mid))
+    else
+        m = partialsort!(v2, mid:mid+1)
+        return middle(m[1], m[2])
+    end
+end
+
