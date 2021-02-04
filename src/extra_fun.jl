@@ -121,9 +121,9 @@ function Base.sum(x::AbstractArray{Union{T,Missing},1}) where {T <: Number}
     for i in 1:length(x)
         if !ismissing(x[i])
             res+=x[i]
+        else
+            cnt_miss+=1
         end
-    else
-        cnt_miss+=1
     end
     if cnt_miss==length(x)
         res=missing

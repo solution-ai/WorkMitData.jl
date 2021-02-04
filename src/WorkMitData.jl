@@ -12,7 +12,15 @@ export
 	dttodate!,
 	stdze,
 	rescale,
-	intck
+	intck,
+	maximum,
+	minimum,
+	sum,
+	mean,
+	var,
+	std,
+	median!,
+	quantile
 
 
 include("extra_fun.jl")
