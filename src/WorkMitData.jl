@@ -1,10 +1,12 @@
 module WorkMitData
 
+
+using Reexport
 using Dates
 using Random
-using DataFrames
+@reexport using DataFrames
 using Statistics
-using StatsBase
+@reexport using StatsBase
 
 export 
 	lag,
