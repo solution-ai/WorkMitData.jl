@@ -27,6 +27,5 @@ export
 
 
 include("extra_fun.jl")
-# Write your package code here.
 
 end
