@@ -167,7 +167,7 @@ function Statistics.var(x::AbstractArray{Union{T,Missing},1},df=true) where {T <
         if df
             res=(cnt_nonmiss/(cnt_nonmiss-1))*res
         end
-    else if cnt_nonmiss==0
+    elseif cnt_nonmiss==0
         res=0.0
     else
         res=missing
