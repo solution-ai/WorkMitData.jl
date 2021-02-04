@@ -162,9 +162,11 @@ function Statistics.var(x::AbstractArray{Union{T,Missing},1},df=true) where {T <
             cnt_nonmiss+=1
         end
     end
-    if cnt_nonmiss>0
-        df ? cnt_nonmiss-=1 : nothing
+    if cnt_nonmiss>1
         res=ss/cnt_nonmiss - (sval/cnt_nonmiss)*(sval/cnt_nonmiss)
+        if df
+            res=(cnt_nonmiss/(cnt_nonmiss-1))*res
+        end
     else
         res=missing
     end
@@ -192,7 +194,7 @@ function Statistics.median(v::AbstractArray{T,1}) where T
     end
 end
 
-function quantile(x::AbstractArray{T,1},v) where T
+function Statistics.quantile(x::AbstractArray{T,1},v) where T
     all(ismissing,x) && return missing
     quantile(skipmissing(x),v)
 end
