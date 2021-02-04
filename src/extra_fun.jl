@@ -20,6 +20,7 @@ rescale(x,minx,maxx) = rescale(x,minx,maxx,0.0,1.0)
 stdze(x) standardizes an array. It return missing for missing data points.
 """
 function stdze(x)
+    all(ismissing,x) && return x
     meandata = mean(skipmissing(x))
     vardata = var(skipmissing(x))
     (x .- meandata) ./ sqrt(vardata)

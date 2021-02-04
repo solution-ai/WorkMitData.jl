@@ -1,7 +1,7 @@
 name = "WorkMitData"
 uuid = "cc48acc3-870a-4577-a3e7-bff4fd7cfba0"
 authors = ["sa"]
-version = "0.1.1"
+version = "0.1.2"
 
 [compat]
 julia = "1"
