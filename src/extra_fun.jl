@@ -101,7 +101,7 @@ function Base.minimum(x::AbstractArray{Union{T,Missing},1}) where {T <: Number}
     cnt_miss=0
     for i in 1:length(x)
         if !ismissing(x[i])
-            if res<x[i]
+            if res>x[i]
                 res=x[i]
             end
         else
