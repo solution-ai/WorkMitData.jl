@@ -19,7 +19,7 @@ export
 	mean,
 	var,
 	std,
-	median!,
+	median,
 	quantile
 
 
