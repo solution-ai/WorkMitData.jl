@@ -176,7 +176,7 @@ function Statistics.std(x::AbstractArray{Union{T,Missing},1},df=true) where {T <
 end
 
 
-function Statistics.median!(v::AbstractVector{T,1}) where T
+function Statistics.median!(v::AbstractArray{T,1}) where T
     isempty(v) && throw(ArgumentError("median of an empty array is undefined, $(repr(v))"))
     eltype(v)>:Missing && all(ismissing, v) && return missing
     (eltype(v)<:AbstractFloat || eltype(v)>:AbstractFloat) && any(isnan, v) && return convert(eltype(v), NaN)
