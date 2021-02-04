@@ -191,3 +191,8 @@ function Statistics.median!(v::AbstractVector)
     end
 end
 
+function quantile(x::AbstractArray{T,1},v) where T
+    all(ismissing,x) && return missing
+    quantile(skipmissing(x),v)
+end
+
