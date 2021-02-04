@@ -194,7 +194,7 @@ function Statistics.median(v::AbstractArray{T,1}) where T
     end
 end
 
-function Statistics.quantile(x::AbstractArray{T,1},v) where T
+function Statistics.quantile(x::Array{T,1},v) where T
     all(ismissing,x) && return missing
     quantile(skipmissing(x),v)
 end
