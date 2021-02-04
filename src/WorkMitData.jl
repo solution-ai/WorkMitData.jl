@@ -4,6 +4,7 @@ using Dates
 using Random
 using DataFrames
 using Statistics
+using StatsBase
 
 export 
 	lag,
