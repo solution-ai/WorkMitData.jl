@@ -94,6 +94,7 @@ function Base.maximum(x::AbstractArray{Union{T,Missing},1}) where {T <: Number}
     end
     res
 end
+Base.maximum(x::AbstractArray{Union{Date,Missing},1})=maximum(skipmissing(x))
 
 Base.minimum(x::AbstractArray{Missing,1})=missing
 function Base.minimum(x::AbstractArray{Union{T,Missing},1}) where {T <: Number}
@@ -113,6 +114,7 @@ function Base.minimum(x::AbstractArray{Union{T,Missing},1}) where {T <: Number}
     end
     res
 end
+Base.minimum(x::AbstractArray{Union{Date,Missing},1})=minimum(skipmissing(x))
 
 Base.sum(x::AbstractArray{Missing,1})=missing
 function Base.sum(x::AbstractArray{Union{T,Missing},1}) where {T <: Number}
